@@ -1,3 +1,5 @@
+//Modified implementation posted by @CrayonConstantinople here: https://www.reddit.com/r/spreadsheets/comments/5zbnbb/help_populate_cells_with_book_details_from_isbn/dfcz1kj/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button
+
 s = SpreadsheetApp.getActiveSheet();
 
 function onOpen() {
@@ -18,6 +20,8 @@ function getBookDetailsFromISBN(isbn) {
     if (isbn.match(/(\d{13}|\d{10})/) == null) {
         throw new Error("Not a valid ISBN: " + isbn);
     }
+
+    //URL fix, needed to add in region: https://stackoverflow.com/questions/11232691/google-books-api-server-not-accepting-calls-from-heroku-server
     var url = "https://www.googleapis.com/books/v1/volumes?country=US&q=isbn:" + isbn;
     var response = UrlFetchApp.fetch(url);
     var results = JSON.parse(response);
@@ -51,6 +55,7 @@ function getBookDetailsFromTitle(title) {
     title = title || value.toString();
     title = title.replaceAll(' ', '%20');
 
+    //URL fix, needed to add in region: https://stackoverflow.com/questions/11232691/google-books-api-server-not-accepting-calls-from-heroku-server
     var url = "https://www.googleapis.com/books/v1/volumes?country=US&q=title:" + title;
     var response = UrlFetchApp.fetch(url);
     var results = JSON.parse(response);
